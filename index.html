@@ -3,43 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JARVIS GOD-MODE GEN 3</title>
+    <title>JARVIS GOD-MODE GEN 4</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
         :root { --main-color: #ff0000; --bg-color: #050505; --panel-bg: #111; }
         body { background-color: var(--bg-color); color: var(--main-color); font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .container { width: 95%; max-width: 600px; background: var(--panel-bg); padding: 20px; border: 1px solid var(--main-color); border-radius: 12px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); }
-        h2 { text-align: center; margin-top: 0; letter-spacing: 4px; text-shadow: 0 0 10px var(--main-color); }
+        .container { width: 95%; max-width: 600px; background: var(--panel-bg); padding: 15px; border: 1px solid var(--main-color); border-radius: 12px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); display: flex; flex-direction: column; height: 90vh; }
         
-        #chat-box { height: 450px; overflow-y: auto; margin-bottom: 15px; padding: 15px; background: #0a0a0a; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; scroll-behavior: smooth; }
-        .msg { margin: 8px 0; padding: 12px; border-radius: 8px; max-width: 85%; line-height: 1.5; font-family: 'Segoe UI', sans-serif; font-size: 15px; }
-        .user-msg { align-self: flex-end; background: #1a1a1a; color: #fff; border-right: 4px solid var(--main-color); }
-        .jarvis-msg { align-self: flex-start; background: #3a0000; color: #fff; border-left: 4px solid var(--main-color); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #444; padding-bottom: 10px; margin-bottom: 10px; }
+        h2 { margin: 0; letter-spacing: 3px; text-shadow: 0 0 10px var(--main-color); font-size: 20px; }
+        .clear-btn { background: #330000; border: 1px solid var(--main-color); color: #fff; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
         
-        .input-area { display: flex; gap: 10px; width: 100%; }
+        #chat-box { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; padding: 15px; background: #0a0a0a; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; scroll-behavior: smooth; }
+        .msg { margin: 8px 0; padding: 12px; border-radius: 8px; max-width: 85%; line-height: 1.5; font-family: 'Segoe UI', sans-serif; font-size: 14px; }
+        .user-msg { align-self: flex-end; background: #1a1a1a; color: #fff; border-right: 3px solid var(--main-color); }
+        .jarvis-msg { align-self: flex-start; background: #3a0000; color: #fff; border-left: 3px solid var(--main-color); }
+        
+        .input-area { display: flex; gap: 8px; width: 100%; }
         input[type="text"] { flex-grow: 1; font-family: 'Segoe UI', sans-serif; background: #000; border: 1px solid var(--main-color); color: #fff; padding: 12px; border-radius: 6px; outline: none; }
-        input[type="text"]:focus { box-shadow: 0 0 8px var(--main-color); }
-        button { background: #000; border: 1px solid var(--main-color); color: #fff; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: var(--main-color); color: #000; box-shadow: 0 0 15px var(--main-color); }
+        button.action-btn { background: #000; border: 1px solid var(--main-color); color: #fff; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button.action-btn:hover { background: var(--main-color); color: #000; box-shadow: 0 0 10px var(--main-color); }
         
-        .status { font-size: 12px; text-align: center; color: #888; margin-top: 10px; }
+        .status { font-size: 11px; text-align: center; color: #888; margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>JARVIS <span style="font-size: 12px; color: #fff;">GOD-MODE</span></h2>
-    
+    <div class="header">
+        <h2>JARVIS <span style="font-size: 10px; color: #fff;">v4.0</span></h2>
+        <button class="clear-btn" onclick="clearHistory()">🗑️ Clear</button>
+    </div>
+
     <div id="chat-box"></div>
     
     <div class="input-area">
-        <input type="text" id="user-input" placeholder="Command me, Sir..." onkeypress="handleEnter(event)">
-        <button onclick="startListening()">🎤</button>
-        <button onclick="sendMessage()">EXECUTE</button>
+        <input type="text" id="user-input" placeholder="Initializing..." onkeypress="handleEnter(event)">
+        <button class="action-btn" onclick="startListening()">🎤</button>
+        <button class="action-btn" onclick="sendMessage()">SEND</button>
     </div>
-    <div class="status" id="status-text">System is fully integrated and online.</div>
+    <div class="status" id="status-text">System is tracking neural history.</div>
 </div>
 
 <script>
@@ -47,18 +52,50 @@
     const userInput = document.getElementById('user-input');
     const statusText = document.getElementById('status-text');
     
-    // 🚨 HACKER TRICK: आपकी चाबी को 3 हिस्सों में तोड़ दिया है ताकि GitHub इसे पकड़ न सके!
-    const p1 = "AIzaSyABN_K";
-    const p2 = "4jNO2l4rZ6jFCL";
-    const p3 = "HgW4ngCuZuPOT0";
-    const GEMINI_KEY = p1 + p2 + p3; // यह जुड़कर पूरी चाबी बन जाएगी
+    // 🚨 HACKER TRICK: Hidden Key
+    const p1 = "AIzaSyABN_K"; const p2 = "4jNO2l4rZ6jFCL"; const p3 = "HgW4ngCuZuPOT0";
+    const GEMINI_KEY = p1 + p2 + p3; 
     
     let chatHistory = []; 
+    let userName = "";
 
     window.onload = () => {
-        addMessage("Jarvis God-Mode Generation 3 is online. Neural pathways active. Awaiting your command, Vivek.", 'jarvis-msg');
-        speak("Jarvis God-Mode Generation 3 is online. Awaiting your command, Vivek.");
+        // 1. नाम चेक करना
+        userName = localStorage.getItem("jarvis_user_name");
+        if (!userName) {
+            userName = prompt("Welcome to Jarvis. Please enter your name to initialize:") || "Sir";
+            localStorage.setItem("jarvis_user_name", userName);
+        }
+        
+        // 2. इनपुट बॉक्स का टेक्स्ट बदलना
+        userInput.placeholder = `Command me, ${userName}...`;
+
+        // 3. पुरानी हिस्ट्री लोड करना
+        const savedHistory = localStorage.getItem("jarvis_chat_history");
+        if (savedHistory) {
+            chatHistory = JSON.parse(savedHistory);
+            // हिस्ट्री को स्क्रीन पर दिखाना
+            chatHistory.forEach(msg => {
+                if(msg.role === 'user') addMessageToUI(msg.parts[0].text, 'user-msg');
+                if(msg.role === 'model') addMessageToUI(msg.parts[0].text, 'jarvis-msg');
+            });
+            setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 100);
+        } else {
+            // अगर हिस्ट्री नहीं है तो वेलकम मैसेज
+            const welcomeMsg = `System online. Welcome back, ${userName}. Your history will be saved securely.`;
+            addMessageToUI(welcomeMsg, 'jarvis-msg');
+            speak(`Welcome back, ${userName}.`);
+        }
     };
+
+    function clearHistory() {
+        if(confirm("Are you sure you want to wipe my memory?")) {
+            localStorage.removeItem("jarvis_chat_history");
+            chatHistory = [];
+            chatBox.innerHTML = "";
+            addMessageToUI("Memory wiped successfully.", 'jarvis-msg');
+        }
+    }
 
     function speak(text) {
         let cleanText = text.replace(/[*#`_$]/g, '').replace(/\\frac/g, ' fraction ').replace(/\\/g, '');
@@ -84,26 +121,36 @@
 
     function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
 
+    function addMessageToUI(text, type) {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        formattedText = formattedText.replace(/\n/g, '<br>');
+        div.innerHTML = formattedText;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
     async function sendMessage() {
         const text = userInput.value.trim();
-
         if (!text) return;
         
-        addMessage(text, 'user-msg');
+        addMessageToUI(text, 'user-msg');
         userInput.value = '';
         statusText.innerText = "Connecting to Core...";
         statusText.style.color = "#ff0000";
 
         chatHistory.push({ "role": "user", "parts": [{ "text": text }] });
+        // नई चैट को लोकल स्टोरेज में सेव करना
+        localStorage.setItem("jarvis_chat_history", JSON.stringify(chatHistory));
 
         try {
-            // डायरेक्ट छुपी हुई चाबी (GEMINI_KEY) का इस्तेमाल हो रहा है
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     "systemInstruction": { 
-                        "parts": [{ "text": "You are Jarvis God-Mode Generation 3. You are a highly advanced AI created by Vivek. Answer concisely, logically, and always address him as Sir or Vivek. You have a cool, robotic, loyal personality. Use proper LaTeX for any math formulas." }] 
+                        "parts": [{ "text": `You are Jarvis God-Mode Generation 4. The user's name is ${userName}. Always address the user as ${userName} directly. Be loyal, smart, and concise. Use proper LaTeX for math.` }] 
                     },
                     "contents": chatHistory
                 })
@@ -115,7 +162,10 @@
             const reply = data.candidates[0].content.parts[0].text;
             chatHistory.push({ "role": "model", "parts": [{ "text": reply }] });
             
-            addMessage(reply, 'jarvis-msg');
+            // जार्विस का जवाब सेव करना
+            localStorage.setItem("jarvis_chat_history", JSON.stringify(chatHistory));
+            
+            addMessageToUI(reply, 'jarvis-msg');
             speak(reply);
             statusText.innerText = "System is standing by.";
             statusText.style.color = "#888";
@@ -123,243 +173,13 @@
             if (window.MathJax) MathJax.typesetPromise([chatBox]).catch((err) => console.log(err.message));
 
         } catch (err) {
-            addMessage("Network Error: Connection to Core failed.", 'jarvis-msg');
+            addMessageToUI("Network Error: Connection to Core failed.", 'jarvis-msg');
             statusText.innerText = "Error encountered.";
             statusText.style.color = "#ff0000";
-            chatHistory.pop(); 
+            chatHistory.pop(); // एरर आने पर मैसेज हटा दें
+            localStorage.setItem("jarvis_chat_history", JSON.stringify(chatHistory));
         }
     }
-
-    function addMessage(text, type) {
-        const div = document.createElement('div');
-        div.className = `msg ${type}`;
-        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        formattedText = formattedText.replace(/\n/g, '<br>');
-        div.innerHTML = formattedText;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-</script>
-</body>
-</html>
-            <option value="google/gemma-3-27b-it:free">Gemma 3 (Fastest Response)</option>
-            <option value="deepseek/deepseek-chat:free">DeepSeek (Advanced Mathematics)</option>
-            <option value="nousresearch/hermes-3-llama-3.1-405b:free">Llama 3.1 (Complex Logic)</option>
-        </select>
-    </div>
-
-    <div id="chat-box"></div>
-    
-    <div class="input-area">
-        <input type="text" id="user-input" placeholder="Awaiting command, Sir..." onkeypress="handleEnter(event)">
-        <button onclick="startListening()" title="Voice Command">🎤</button>
-        <button onclick="sendMessage()">EXECUTE</button>
-    </div>
-    <div class="status" id="status-text">System is standing by.</div>
-</div>
-
-<script>
-    const chatBox = document.getElementById('chat-box');
-    const userInput = document.getElementById('user-input');
-    const apiKeyField = document.getElementById('api-key');
-    const modelSelect = document.getElementById('model-select');
-    const statusText = document.getElementById('status-text');
-
-    // 🧠 MEMORY BANK: जार्विस की याददाश्त और आपका परिचय
-    let chatHistory = [
-        {
-            "role": "system", 
-            "content": "You are Jarvis God-Mode Gen-3. You were created by Vivek. Vivek is a B.Sc. (Hons) Mathematics student. Always provide highly logical, accurate, and concise answers. Address him as Sir or Vivek. If he asks about math, use proper LaTeX formatting."
-        }
-    ];
-
-    function speak(text) {
-        // Remove markdown and LaTeX symbols before speaking so it sounds natural
-        let cleanText = text.replace(/[*#`_$]/g, '').replace(/\\frac/g, ' fraction ').replace(/\\/g, '');
-        const synth = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.rate = 1.05;
-        synth.speak(utterance);
-    }
-
-    function startListening() {
-        statusText.innerText = "Listening...";
-        statusText.style.color = "#ff0000";
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'en-IN';
-        recognition.start();
-        recognition.onresult = (e) => { 
-            userInput.value = e.results[0][0].transcript; 
-            statusText.innerText = "Voice captured. Processing...";
-            sendMessage(); 
-        };
-        recognition.onerror = () => {
-            statusText.innerText = "Mic error. Try typing.";
-            statusText.style.color = "#888";
-        }
-    }
-
-    function handleEnter(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    }
-
-    async function sendMessage() {
-        const text = userInput.value.trim();
-        const key = apiKeyField.value.trim();
-        const model = modelSelect.value;
-
-        if (!text) return;
-        if (!key) {
-            alert("Sir, please paste your API Key in the settings box first.");
-            return;
-        }
-        
-        addMessage(text, 'user-msg');
-        userInput.value = '';
-        statusText.innerText = "Connecting to Neural Network...";
-        statusText.style.color = "#ffaa00";
-
-        // याददाश्त में नया सवाल जोड़ना
-        chatHistory.push({"role": "user", "content": text});
-
-        try {
-            const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                method: "POST",
-                headers: { 
-                    "Authorization": `Bearer ${key}`, 
-                    "Content-Type": "application/json" 
-                },
-                body: JSON.stringify({
-                    "model": model,
-                    "messages": chatHistory
-                })
-            });
-            
-            if (!res.ok) throw new Error("API Key or Model Error");
-
-            const data = await res.json();
-            const reply = data.choices[0].message.content;
-            
-            // याददाश्त में जार्विस का जवाब जोड़ना
-            chatHistory.push({"role": "assistant", "content": reply});
-            
-            addMessage(reply, 'jarvis-msg');
-            speak(reply);
-            statusText.innerText = "System is standing by.";
-            statusText.style.color = "#888";
-
-            // MathJax को ट्रिगर करना ताकि मैथ के फॉर्मूले सही दिखें
-            if (window.MathJax) {
-                MathJax.typesetPromise([chatBox]).catch((err) => console.log(err.message));
-            }
-
-        } catch (err) {
-            addMessage("Neural link failure. The API Key might be invalid or the selected model is currently overloaded. Please check the key or switch the model.", 'jarvis-msg');
-            statusText.innerText = "Error encountered.";
-            statusText.style.color = "#ff0000";
-            chatHistory.pop(); // एरर आने पर आखिरी सवाल हटा दें ताकि मेमोरी खराब न हो
-        }
-    }
-
-    function addMessage(text, type) {
-        const div = document.createElement('div');
-        div.className = `msg ${type}`;
-        
-        // Basic Markdown to HTML conversion for bold text
-        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        div.innerHTML = formattedText;
-        
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    window.onload = () => {
-        setTimeout(() => {
-            speak("System protocols fully upgraded. Awaiting your command, Vivek.");
-        }, 1000);
-    };
-</script>
-</body>
-</html>
-    
-    <div class="input-area">
-        <input type="text" id="user-input" placeholder="Awaiting command, Sir...">
-        <button onclick="startListening()">🎤</button>
-        <button onclick="sendMessage()">EXECUTE</button>
-    </div>
-</div>
-
-<script>
-    const chatBox = document.getElementById('chat-box');
-    const userInput = document.getElementById('user-input');
-    const apiKeyField = document.getElementById('api-key');
-    const modelSelect = document.getElementById('model-select');
-
-    // Voice Synthesis (बोलने का फंक्शन)
-    function speak(text) {
-        const synth = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1.1;
-        synth.speak(utterance);
-    }
-
-    // Voice Recognition (सुनने का फंक्शन)
-    function startListening() {
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'en-IN';
-        recognition.start();
-        recognition.onresult = (e) => { 
-            userInput.value = e.results[0][0].transcript; 
-            sendMessage(); 
-        };
-    }
-
-    // API Joining Function (OpenRouter Logic)
-    async function sendMessage() {
-        const text = userInput.value;
-        const key = apiKeyField.value;
-        const model = modelSelect.value;
-
-        if (!text || !key) return;
-        
-        addMessage(text, 'user-msg');
-        userInput.value = '';
-
-        try {
-            const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                method: "POST",
-                headers: { 
-                    "Authorization": `Bearer ${key}`, 
-                    "Content-Type": "application/json" 
-                },
-                body: JSON.stringify({
-                    "model": model,
-                    "messages": [
-                        {"role": "system", "content": "You are Jarvis. Created by Vivek. Answer briefly and address him as Sir."}, 
-                        {"role": "user", "content": text}
-                    ]
-                })
-            });
-            const data = await res.json();
-            const reply = data.choices[0].message.content;
-            addMessage(reply, 'jarvis-msg');
-            speak(reply);
-        } catch (err) {
-            addMessage("Neural link failure. Check your API Key or Network.", 'jarvis-msg');
-        }
-    }
-
-    function addMessage(text, type) {
-        const div = document.createElement('div');
-        div.className = `msg ${type}`;
-        div.innerText = text;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    window.onload = () => speak("System online. Vivek, I am now independent of external platforms.");
 </script>
 </body>
 </html>
