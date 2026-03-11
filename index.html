@@ -4,36 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JARVIS GOD-MODE GEN 3</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
-        body { background-color: #000; color: #ff0000; font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .container { width: 95%; max-width: 500px; background: #0a0a0a; padding: 15px; border: 2px solid #ff0000; border-radius: 10px; box-shadow: 0 0 15px #ff0000; }
-        #chat-box { height: 350px; overflow-y: auto; margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #333; display: flex; flex-direction: column; }
-        .msg { margin: 5px 0; padding: 10px; border-radius: 5px; max-width: 85%; line-height: 1.4; }
-        .user-msg { align-self: flex-end; background: #222; color: #fff; border-right: 3px solid #ff0000; }
-        .jarvis-msg { align-self: flex-start; background: #400; color: #fff; border-left: 3px solid #ff0000; }
-        .settings-panel { display: grid; gap: 8px; margin-bottom: 15px; background: #111; padding: 12px; border: 1px dashed #ff0000; border-radius: 5px; }
-        input, select, button { background: #000; border: 1px solid #ff0000; color: #fff; padding: 10px; border-radius: 5px; font-size: 14px; }
-        button:hover { background: #ff0000; color: #000; cursor: pointer; transition: 0.3s; }
-        .input-area { display: flex; gap: 8px; width: 100%; }
-        input[type="text"] { flex-grow: 1; }
+        :root { --main-color: #ff0000; --bg-color: #050505; --panel-bg: #111; }
+        body { background-color: var(--bg-color); color: var(--main-color); font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .container { width: 95%; max-width: 600px; background: var(--panel-bg); padding: 20px; border: 1px solid var(--main-color); border-radius: 12px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.2); }
+        h2 { text-align: center; margin-top: 0; letter-spacing: 4px; text-shadow: 0 0 10px var(--main-color); }
+        .settings-panel { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; background: #000; padding: 15px; border: 1px solid #333; border-radius: 8px; }
+        input, select, button { background: #000; border: 1px solid var(--main-color); color: #fff; padding: 12px; border-radius: 6px; font-size: 15px; outline: none; }
+        input:focus, select:focus { box-shadow: 0 0 8px var(--main-color); }
+        button { font-weight: bold; letter-spacing: 1px; transition: 0.3s; }
+        button:hover { background: var(--main-color); color: #000; cursor: pointer; box-shadow: 0 0 15px var(--main-color); }
+        #chat-box { height: 380px; overflow-y: auto; margin-bottom: 15px; padding: 15px; background: #0a0a0a; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; scroll-behavior: smooth; }
+        .msg { margin: 8px 0; padding: 12px; border-radius: 8px; max-width: 85%; line-height: 1.5; font-family: 'Segoe UI', sans-serif; }
+        .user-msg { align-self: flex-end; background: #1a1a1a; color: #fff; border-right: 4px solid var(--main-color); }
+        .jarvis-msg { align-self: flex-start; background: #3a0000; color: #fff; border-left: 4px solid var(--main-color); }
+        .input-area { display: flex; gap: 10px; width: 100%; }
+        input[type="text"] { flex-grow: 1; font-family: 'Segoe UI', sans-serif; }
+        .status { font-size: 12px; text-align: center; color: #888; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 style="text-align:center; margin-top:0; letter-spacing: 3px;">JARVIS GEN-3</h2>
+    <h2>JARVIS GEN-3</h2>
     
     <div class="settings-panel">
-        <input type="password" id="api-key" placeholder="Paste OpenRouter API Key" value="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">
+        <input type="password" id="api-key" placeholder="🔑 Paste your new OpenRouter API Key here" value="">
         <select id="model-select">
-            <option value="google/gemma-3-27b-it:free">Gemma 3 (Fastest)</option>
-            <option value="nousresearch/hermes-3-llama-3.1-405b:free">Llama 3.1 (Smartest)</option>
-            <option value="deepseek/deepseek-chat:free">DeepSeek (Math Specialist)</option>
-            <option value="z-ai/glm-4.5-air:free">GLM-4.5 Air (Logic)</option>
+            <option value="google/gemma-3-27b-it:free">Gemma 3 (Fastest Response)</option>
+            <option value="deepseek/deepseek-chat:free">DeepSeek (Advanced Mathematics)</option>
+            <option value="nousresearch/hermes-3-llama-3.1-405b:free">Llama 3.1 (Complex Logic)</option>
         </select>
     </div>
 
     <div id="chat-box"></div>
+    
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="Awaiting command, Sir..." onkeypress="handleEnter(event)">
+        <button onclick="startListening()" title="Voice Command">🎤</button>
+        <button onclick="sendMessage()">EXECUTE</button>
+    </div>
+    <div class="status" id="status-text">System is standing by.</div>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const apiKeyField = document.getElementById('api-key');
+    const modelSelect = document.getElementById('model-select');
+    const statusText = document.getElementById('status-text');
+
+    // 🧠 MEMORY BANK: जार्विस की याददाश्त और आपका परिचय
+    let chatHistory = [
+        {
+            "role": "system", 
+            "content": "You are Jarvis God-Mode Gen-3. You were created by Vivek. Vivek is a B.Sc. (Hons) Mathematics student. Always provide highly logical, accurate, and concise answers. Address him as Sir or Vivek. If he asks about math, use proper LaTeX formatting."
+        }
+    ];
+
+    function speak(text) {
+        // Remove markdown and LaTeX symbols before speaking so it sounds natural
+        let cleanText = text.replace(/[*#`_$]/g, '').replace(/\\frac/g, ' fraction ').replace(/\\/g, '');
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.rate = 1.05;
+        synth.speak(utterance);
+    }
+
+    function startListening() {
+        statusText.innerText = "Listening...";
+        statusText.style.color = "#ff0000";
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-IN';
+        recognition.start();
+        recognition.onresult = (e) => { 
+            userInput.value = e.results[0][0].transcript; 
+            statusText.innerText = "Voice captured. Processing...";
+            sendMessage(); 
+        };
+        recognition.onerror = () => {
+            statusText.innerText = "Mic error. Try typing.";
+            statusText.style.color = "#888";
+        }
+    }
+
+    function handleEnter(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        const key = apiKeyField.value.trim();
+        const model = modelSelect.value;
+
+        if (!text) return;
+        if (!key) {
+            alert("Sir, please paste your API Key in the settings box first.");
+            return;
+        }
+        
+        addMessage(text, 'user-msg');
+        userInput.value = '';
+        statusText.innerText = "Connecting to Neural Network...";
+        statusText.style.color = "#ffaa00";
+
+        // याददाश्त में नया सवाल जोड़ना
+        chatHistory.push({"role": "user", "content": text});
+
+        try {
+            const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: { 
+                    "Authorization": `Bearer ${key}`, 
+                    "Content-Type": "application/json" 
+                },
+                body: JSON.stringify({
+                    "model": model,
+                    "messages": chatHistory
+                })
+            });
+            
+            if (!res.ok) throw new Error("API Key or Model Error");
+
+            const data = await res.json();
+            const reply = data.choices[0].message.content;
+            
+            // याददाश्त में जार्विस का जवाब जोड़ना
+            chatHistory.push({"role": "assistant", "content": reply});
+            
+            addMessage(reply, 'jarvis-msg');
+            speak(reply);
+            statusText.innerText = "System is standing by.";
+            statusText.style.color = "#888";
+
+            // MathJax को ट्रिगर करना ताकि मैथ के फॉर्मूले सही दिखें
+            if (window.MathJax) {
+                MathJax.typesetPromise([chatBox]).catch((err) => console.log(err.message));
+            }
+
+        } catch (err) {
+            addMessage("Neural link failure. The API Key might be invalid or the selected model is currently overloaded. Please check the key or switch the model.", 'jarvis-msg');
+            statusText.innerText = "Error encountered.";
+            statusText.style.color = "#ff0000";
+            chatHistory.pop(); // एरर आने पर आखिरी सवाल हटा दें ताकि मेमोरी खराब न हो
+        }
+    }
+
+    function addMessage(text, type) {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        
+        // Basic Markdown to HTML conversion for bold text
+        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        div.innerHTML = formattedText;
+        
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    window.onload = () => {
+        setTimeout(() => {
+            speak("System protocols fully upgraded. Awaiting your command, Vivek.");
+        }, 1000);
+    };
+</script>
+</body>
+</html>
     
     <div class="input-area">
         <input type="text" id="user-input" placeholder="Awaiting command, Sir...">
