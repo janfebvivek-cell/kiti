@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS GOD-MODE GEN 3</title>
+    <style>
+        body { background-color: #000; color: #ff0000; font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .container { width: 95%; max-width: 500px; background: #0a0a0a; padding: 15px; border: 2px solid #ff0000; border-radius: 10px; box-shadow: 0 0 15px #ff0000; }
+        #chat-box { height: 350px; overflow-y: auto; margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #333; display: flex; flex-direction: column; }
+        .msg { margin: 5px 0; padding: 10px; border-radius: 5px; max-width: 85%; line-height: 1.4; }
+        .user-msg { align-self: flex-end; background: #222; color: #fff; border-right: 3px solid #ff0000; }
+        .jarvis-msg { align-self: flex-start; background: #400; color: #fff; border-left: 3px solid #ff0000; }
+        .settings-panel { display: grid; gap: 8px; margin-bottom: 15px; background: #111; padding: 12px; border: 1px dashed #ff0000; border-radius: 5px; }
+        input, select, button { background: #000; border: 1px solid #ff0000; color: #fff; padding: 10px; border-radius: 5px; font-size: 14px; }
+        button:hover { background: #ff0000; color: #000; cursor: pointer; transition: 0.3s; }
+        .input-area { display: flex; gap: 8px; width: 100%; }
+        input[type="text"] { flex-grow: 1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 style="text-align:center; margin-top:0; letter-spacing: 3px;">JARVIS GEN-3</h2>
+    
+    <div class="settings-panel">
+        <input type="password" id="api-key" placeholder="Paste OpenRouter API Key" value="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">
+        <select id="model-select">
+            <option value="google/gemma-3-27b-it:free">Gemma 3 (Fastest)</option>
+            <option value="nousresearch/hermes-3-llama-3.1-405b:free">Llama 3.1 (Smartest)</option>
+            <option value="deepseek/deepseek-chat:free">DeepSeek (Math Specialist)</option>
+            <option value="z-ai/glm-4.5-air:free">GLM-4.5 Air (Logic)</option>
+        </select>
+    </div>
+
+    <div id="chat-box"></div>
+    
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="Awaiting command, Sir...">
+        <button onclick="startListening()">🎤</button>
+        <button onclick="sendMessage()">EXECUTE</button>
+    </div>
+</div>
+
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const apiKeyField = document.getElementById('api-key');
+    const modelSelect = document.getElementById('model-select');
+
+    // Voice Synthesis (बोलने का फंक्शन)
+    function speak(text) {
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.1;
+        synth.speak(utterance);
+    }
+
+    // Voice Recognition (सुनने का फंक्शन)
+    function startListening() {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-IN';
+        recognition.start();
+        recognition.onresult = (e) => { 
+            userInput.value = e.results[0][0].transcript; 
+            sendMessage(); 
+        };
+    }
+
+    // API Joining Function (OpenRouter Logic)
+    async function sendMessage() {
+        const text = userInput.value;
+        const key = apiKeyField.value;
+        const model = modelSelect.value;
+
+        if (!text || !key) return;
+        
+        addMessage(text, 'user-msg');
+        userInput.value = '';
+
+        try {
+            const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: { 
+                    "Authorization": `Bearer ${key}`, 
+                    "Content-Type": "application/json" 
+                },
+                body: JSON.stringify({
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": "You are Jarvis. Created by Vivek. Answer briefly and address him as Sir."}, 
+                        {"role": "user", "content": text}
+                    ]
+                })
+            });
+            const data = await res.json();
+            const reply = data.choices[0].message.content;
+            addMessage(reply, 'jarvis-msg');
+            speak(reply);
+        } catch (err) {
+            addMessage("Neural link failure. Check your API Key or Network.", 'jarvis-msg');
+        }
+    }
+
+    function addMessage(text, type) {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        div.innerText = text;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    window.onload = () => speak("System online. Vivek, I am now independent of external platforms.");
+</script>
+</body>
+</html>
