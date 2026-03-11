@@ -1,185 +1,251 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JARVIS GOD-MODE GEN 4</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
+    <meta property="og:title" content="JARVIS AI - BY VIVEK RAI">
+    <meta property="og:description" content="The Ultimate 1-Lakh Agent Multi-Studio Network">
+    <title>JARVIS AI | VIVEK RAI EDITION</title>
     <style>
-        :root { --main-color: #ff0000; --bg-color: #050505; --panel-bg: #111; }
-        body { background-color: var(--bg-color); color: var(--main-color); font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .container { width: 95%; max-width: 600px; background: var(--panel-bg); padding: 15px; border: 1px solid var(--main-color); border-radius: 12px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); display: flex; flex-direction: column; height: 90vh; }
+        :root { --main: #00ffcc; --bg: #050505; --panel: #111; --danger: #ff0055; }
+        body { background: var(--bg); color: #fff; font-family: 'Courier New', monospace; margin: 0; overflow-x: hidden; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #444; padding-bottom: 10px; margin-bottom: 10px; }
-        h2 { margin: 0; letter-spacing: 3px; text-shadow: 0 0 10px var(--main-color); font-size: 20px; }
-        .clear-btn { background: #330000; border: 1px solid var(--main-color); color: #fff; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        /* 📱 Mobile Optimized Layout */
+        #auth-screen, #security-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
+        .box { background: var(--panel); padding: 30px; border-radius: 12px; border: 1px solid var(--main); width: 85%; max-width: 400px; box-shadow: 0 0 25px rgba(0,255,204,0.15); }
         
-        #chat-box { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; padding: 15px; background: #0a0a0a; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; scroll-behavior: smooth; }
-        .msg { margin: 8px 0; padding: 12px; border-radius: 8px; max-width: 85%; line-height: 1.5; font-family: 'Segoe UI', sans-serif; font-size: 14px; }
-        .user-msg { align-self: flex-end; background: #1a1a1a; color: #fff; border-right: 3px solid var(--main-color); }
-        .jarvis-msg { align-self: flex-start; background: #3a0000; color: #fff; border-left: 3px solid var(--main-color); }
+        input { width: 100%; padding: 14px; margin: 10px 0; background: #000; color: var(--main); border: 1px solid #333; border-radius: 8px; box-sizing: border-box; font-size: 16px; outline: none; }
+        input:focus { border-color: var(--main); }
         
-        .input-area { display: flex; gap: 8px; width: 100%; }
-        input[type="text"] { flex-grow: 1; font-family: 'Segoe UI', sans-serif; background: #000; border: 1px solid var(--main-color); color: #fff; padding: 12px; border-radius: 6px; outline: none; }
-        button.action-btn { background: #000; border: 1px solid var(--main-color); color: #fff; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button.action-btn:hover { background: var(--main-color); color: #000; box-shadow: 0 0 10px var(--main-color); }
+        button { width: 100%; padding: 14px; background: var(--main); color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        button:hover { background: #fff; transform: translateY(-2px); }
+
+        /* 🎬 Main Hub UI */
+        #main-hub { display: none; padding: 15px; max-width: 800px; margin: auto; }
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #222; margin-bottom: 20px; }
+        .coins { color: #ffaa00; font-weight: bold; font-size: 18px; }
+
+        /* 📺 AI Video Engine */
+        #player { width: 100%; height: 250px; background: #000; border: 2px solid #222; position: relative; display: flex; align-items: center; justify-content: center; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        #player img { width: 100%; height: 100%; object-fit: cover; }
+        #subs { position: absolute; bottom: 0; background: rgba(0,0,0,0.85); padding: 15px; width: 100%; color: #ffeb3b; text-align: center; font-size: 14px; font-weight: bold; border-top: 1px solid #333; }
+
+        /* 📟 Console Terminal */
+        #terminal { background: #000; height: 100px; overflow-y: auto; padding: 12px; font-size: 12px; color: #00e676; border: 1px dashed #333; margin-top: 15px; border-radius: 8px; line-height: 1.6; }
         
-        .status { font-size: 11px; text-align: center; color: #888; margin-top: 5px; }
+        /* 💸 Reward Ad Overlay */
+        #ad-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; }
+
+        /* 👑 God Trigger (Secret) */
+        .god-trigger { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; opacity: 0; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h2>JARVIS <span style="font-size: 10px; color: #fff;">v4.0</span></h2>
-        <button class="clear-btn" onclick="clearHistory()">🗑️ Clear</button>
+    <div id="auth-screen">
+        <div class="box" style="border-color: var(--danger);">
+            <h2 style="color: var(--danger); margin-top: 0;">JARVIS PROTOCOL</h2>
+            <p style="color: #666; font-size: 12px; margin-bottom: 20px;">AUTHENTICATION REQUIRED</p>
+            <input type="text" id="user-in" placeholder="Username">
+            <input type="password" id="pass-in" placeholder="Password">
+            <button onclick="AuthAgent.login()" style="background: var(--danger);">LOG-IN</button>
+            <button onclick="AuthAgent.signup()" style="background:#222; color:#aaa; margin-top:8px;">NEW REGISTRATION</button>
+        </div>
     </div>
 
-    <div id="chat-box"></div>
-    
-    <div class="input-area">
-        <input type="text" id="user-input" placeholder="Initializing..." onkeypress="handleEnter(event)">
-        <button class="action-btn" onclick="startListening()">🎤</button>
-        <button class="action-btn" onclick="sendMessage()">SEND</button>
+    <div id="security-screen" style="display:none;">
+        <div class="box">
+            <h2>2-STEP VERIFY</h2>
+            <p style="color: #888;">Enter Master 4-Digit Pin</p>
+            <input type="password" id="sec-key" maxlength="4" placeholder="••••" style="text-align: center; letter-spacing: 15px;">
+            <button onclick="SecurityAgent.verify()">ACCESS SYSTEM</button>
+        </div>
     </div>
-    <div class="status" id="status-text">System is tracking neural history.</div>
-</div>
+
+    <div id="main-hub">
+        <div class="nav-bar">
+            <span>USER: <b id="user-display" style="color: var(--main);">GUEST</b></span>
+            <div class="coins">🪙 <span id="coin-bal">0</span></div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <input type="text" id="idea-in" placeholder="Scenario idea (e.g. A futuristic Mumbai)">
+            <button onclick="JarvisCEO.startWork()" id="gen-btn">🎬 GENERATE SCENE (10 Coins)</button>
+            <button id="earn-btn" onclick="EconomyAgent.watchAd()" style="display:none; background:#00e676; color:#000;">📺 EARN 20 COINS (AD)</button>
+        </div>
+
+        <div id="player">SYSTEM READY...</div>
+        <div id="terminal">> Log: System Standby.</div>
+        
+        <button onclick="AuthAgent.logout()" style="background:#222; color:#ff4444; margin-top:30px; border: 1px solid #333;">🔒 TERMINATE SESSION</button>
+    </div>
+
+    <div id="ad-overlay">
+        <div class="box">
+            <h3 style="color:#00e676;">LOADING REWARD...</h3>
+            <div id="timer" style="font-size:50px; color: var(--danger);">5</div>
+            <p style="color: #888;">Verifying ad view to refill your wallet.</p>
+        </div>
+    </div>
+
+    <div class="god-trigger" onclick="AdminAgent.prompt()"></div>
 
 <script>
-    const chatBox = document.getElementById('chat-box');
-    const userInput = document.getElementById('user-input');
-    const statusText = document.getElementById('status-text');
-    
-    // 🚨 HACKER TRICK: Hidden Key
+    // --- 🧬 CORE ENGINE CONFIG ---
     const p1 = "AIzaSyABN_K"; const p2 = "4jNO2l4rZ6jFCL"; const p3 = "HgW4ngCuZuPOT0";
-    const GEMINI_KEY = p1 + p2 + p3; 
-    
-    let chatHistory = []; 
-    let userName = "";
+    const API_KEY = p1 + p2 + p3;
+    let currentUser = "";
 
-    window.onload = () => {
-        // 1. नाम चेक करना
-        userName = localStorage.getItem("jarvis_user_name");
-        if (!userName) {
-            userName = prompt("Welcome to Jarvis. Please enter your name to initialize:") || "Sir";
-            localStorage.setItem("jarvis_user_name", userName);
-        }
-        
-        // 2. इनपुट बॉक्स का टेक्स्ट बदलना
-        userInput.placeholder = `Command me, ${userName}...`;
+    // --- 🤝 AUTOMATION AGENTS ---
 
-        // 3. पुरानी हिस्ट्री लोड करना
-        const savedHistory = localStorage.getItem("jarvis_chat_history");
-        if (savedHistory) {
-            chatHistory = JSON.parse(savedHistory);
-            // हिस्ट्री को स्क्रीन पर दिखाना
-            chatHistory.forEach(msg => {
-                if(msg.role === 'user') addMessageToUI(msg.parts[0].text, 'user-msg');
-                if(msg.role === 'model') addMessageToUI(msg.parts[0].text, 'jarvis-msg');
-            });
-            setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 100);
-        } else {
-            // अगर हिस्ट्री नहीं है तो वेलकम मैसेज
-            const welcomeMsg = `System online. Welcome back, ${userName}. Your history will be saved securely.`;
-            addMessageToUI(welcomeMsg, 'jarvis-msg');
-            speak(`Welcome back, ${userName}.`);
+    // 1. SESSION & AUTH AGENT
+    const AuthAgent = {
+        signup: function() {
+            let u = document.getElementById('user-in').value.trim();
+            let p = document.getElementById('pass-in').value.trim();
+            if(!u || !p) return alert("Error: Missing Data");
+            localStorage.setItem(`j_user_${u}`, p);
+            localStorage.setItem(`coins_${u}`, 100);
+            alert("Success: Account created with 100 startup coins!");
+        },
+        login: function() {
+            let u = document.getElementById('user-in').value.trim();
+            let p = document.getElementById('pass-in').value.trim();
+            if(localStorage.getItem(`j_user_${u}`) === p) {
+                currentUser = u;
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('security-screen').style.display = 'flex';
+            } else { alert("Error: Invalid Credentials"); }
+        },
+        logout: function() {
+            localStorage.removeItem("j_active_session");
+            location.reload();
         }
     };
 
-    function clearHistory() {
-        if(confirm("Are you sure you want to wipe my memory?")) {
-            localStorage.removeItem("jarvis_chat_history");
-            chatHistory = [];
-            chatBox.innerHTML = "";
-            addMessageToUI("Memory wiped successfully.", 'jarvis-msg');
+    // 2. IDENTITY VERIFICATION AGENT
+    const SecurityAgent = {
+        verify: function() {
+            if(document.getElementById('sec-key').value === "2007") {
+                localStorage.setItem("j_active_session", currentUser);
+                this.unlock();
+            } else { alert("Security Breach: Invalid PIN"); }
+        },
+        unlock: function() {
+            document.getElementById('security-screen').style.display = 'none';
+            document.getElementById('main-hub').style.display = 'block';
+            document.getElementById('user-display').innerText = currentUser.toUpperCase();
+            EconomyAgent.update();
+            WelcomeVoice();
         }
-    }
+    };
 
-    function speak(text) {
-        let cleanText = text.replace(/[*#`_$]/g, '').replace(/\\frac/g, ' fraction ').replace(/\\/g, '');
+    // 3. FINANCIAL (COIN) AGENT
+    const EconomyAgent = {
+        update: function() {
+            let c = localStorage.getItem(`coins_${currentUser}`) || 0;
+            document.getElementById('coin-bal').innerText = c;
+            const btn = document.getElementById('gen-btn');
+            const earn = document.getElementById('earn-btn');
+            if(parseInt(c) < 10) {
+                btn.disabled = true;
+                btn.style.opacity = "0.5";
+                earn.style.display = 'block';
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                earn.style.display = 'none';
+            }
+        },
+        watchAd: function() {
+            document.getElementById('ad-overlay').style.display = 'flex';
+            let t = 5;
+            let timer = setInterval(() => {
+                t--;
+                document.getElementById('timer').innerText = t;
+                if(t <= 0) {
+                    clearInterval(timer);
+                    let c = parseInt(localStorage.getItem(`coins_${currentUser}`)) + 20;
+                    localStorage.setItem(`coins_${currentUser}`, c);
+                    document.getElementById('ad-overlay').style.display = 'none';
+                    this.update();
+                }
+            }, 1000);
+        }
+    };
+
+    // 4. THE MASTER AI CEO (Gemini + Pollinations)
+    const JarvisCEO = {
+        startWork: async function() {
+            let idea = document.getElementById('idea-in').value;
+            if(!idea) return;
+            
+            // Deduct Credits
+            let c = parseInt(localStorage.getItem(`coins_${currentUser}`)) - 10;
+            localStorage.setItem(`coins_${currentUser}`, c);
+            EconomyAgent.update();
+
+            document.getElementById('terminal').innerHTML = "> CEO: Requesting neural patterns...";
+            
+            const prompt = `Create a Cinematic 2-scene JSON script for: "${idea}". Format strictly: [{"scene":1, "visual_prompt":"...", "audio_prompt":"..."}]`;
+            
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                    method: "POST", headers: {"Content-Type":"application/json"},
+                    body: JSON.stringify({contents: [{parts: [{text: prompt}]}]})
+                });
+                const data = await res.json();
+                let cleanJson = data.candidates[0].content.parts[0].text.replace(/```json/g, '').replace(/```/g, '').trim();
+                const scenes = JSON.parse(cleanJson);
+                this.render(scenes);
+            } catch(e) { 
+                document.getElementById('terminal').innerHTML = "> Error: Neural link failure. Check connection.";
+            }
+        },
+        render: async function(scenes) {
+            for(let s of scenes) {
+                document.getElementById('terminal').innerHTML += `<br>> Editor: Rendering Scene ${s.scene}...`;
+                await new Promise(resolve => {
+                    let imgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(s.visual_prompt)}?width=1024&height=512&nologo=true`;
+                    document.getElementById('player').innerHTML = `<img src="${imgUrl}"><div id="subs">${s.audio_prompt}</div>`;
+                    
+                    const utt = new SpeechSynthesisUtterance(s.audio_prompt);
+                    utt.onend = resolve;
+                    window.speechSynthesis.speak(utt);
+                });
+            }
+            document.getElementById('terminal').innerHTML += "<br>> Log: Production Success.";
+        }
+    };
+
+    // 5. THE ADMIN (GOD MODE)
+    const AdminAgent = {
+        prompt: function() {
+            if(prompt("MASTER KEY:") === "vivek123") {
+                let u = prompt("User Target:");
+                localStorage.setItem(`coins_${u}`, 9999);
+                alert("Status: God Mode active for " + u);
+                location.reload();
+            }
+        }
+    };
+
+    // 🔊 VOX SYSTEM
+    function WelcomeVoice() {
         const synth = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.rate = 1.05;
-        synth.speak(utterance);
+        const msg = new SpeechSynthesisUtterance(`Welcome back Commander ${currentUser}. All agents are online and synced.`);
+        msg.rate = 0.9;
+        synth.speak(msg);
     }
 
-    function startListening() {
-        statusText.innerText = "Listening...";
-        statusText.style.color = "#ff0000";
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.lang = 'en-IN';
-        recognition.start();
-        recognition.onresult = (e) => { 
-            userInput.value = e.results[0][0].transcript; 
-            statusText.innerText = "Processing...";
-            sendMessage(); 
-        };
-        recognition.onerror = () => { statusText.innerText = "Mic error."; statusText.style.color = "#888"; }
-    }
-
-    function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
-
-    function addMessageToUI(text, type) {
-        const div = document.createElement('div');
-        div.className = `msg ${type}`;
-        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        formattedText = formattedText.replace(/\n/g, '<br>');
-        div.innerHTML = formattedText;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    async function sendMessage() {
-        const text = userInput.value.trim();
-        if (!text) return;
-        
-        addMessageToUI(text, 'user-msg');
-        userInput.value = '';
-        statusText.innerText = "Connecting to Core...";
-        statusText.style.color = "#ff0000";
-
-        chatHistory.push({ "role": "user", "parts": [{ "text": text }] });
-        // नई चैट को लोकल स्टोरेज में सेव करना
-        localStorage.setItem("jarvis_chat_history", JSON.stringify(chatHistory));
-
-        try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    "systemInstruction": { 
-                        "parts": [{ "text": `You are Jarvis God-Mode Generation 4. The user's name is ${userName}. Always address the user as ${userName} directly. Be loyal, smart, and concise. Use proper LaTeX for math.` }] 
-                    },
-                    "contents": chatHistory
-                })
-            });
-            
-            const data = await response.json();
-            if (data.error) throw new Error(data.error.message);
-
-            const reply = data.candidates[0].content.parts[0].text;
-            chatHistory.push({ "role": "model", "parts": [{ "text": reply }] });
-            
-            // जार्विस का जवाब सेव करना
-            localStorage.setItem("jarvis_chat_history", JSON.stringify(chatHistory));
-            
-            addMessageToUI(reply, 'jarvis-msg');
-            speak(reply);
-            statusText.innerText = "System is standing by.";
-            statusText.style.color = "#888";
-
-            if (window.MathJax) MathJax.typesetPromise([chatBox]).catch((err) => console.log(err.message));
-
-        } catch (err) {
-            addMessageToUI("Network Error: Connection to Core failed.", 'jarvis-msg');
-            statusText.innerText = "Error encountered.";
-            statusText.style.color = "#ff0000";
-            chatHistory.pop(); // एरर आने पर मैसेज हटा दें
-            localStorage.setItem("jarvis_chat_history", JSON.stringify(chatHistory));
+    // 🔄 AUTO-SYNC (Page Refresh Handler)
+    window.onload = () => {
+        let savedUser = localStorage.getItem("j_active_session");
+        if(savedUser) {
+            currentUser = savedUser;
+            SecurityAgent.unlock();
         }
-    }
+    };
 </script>
 </body>
 </html>
