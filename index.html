@@ -3,249 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="JARVIS AI - BY VIVEK RAI">
-    <meta property="og:description" content="The Ultimate 1-Lakh Agent Multi-Studio Network">
-    <title>JARVIS AI | VIVEK RAI EDITION</title>
+    <title>JARVIS x GEMINI | MATERIAL 3</title>
     <style>
-        :root { --main: #00ffcc; --bg: #050505; --panel: #111; --danger: #ff0055; }
-        body { background: var(--bg); color: #fff; font-family: 'Courier New', monospace; margin: 0; overflow-x: hidden; }
-        
-        /* 📱 Mobile Optimized Layout */
-        #auth-screen, #security-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
-        .box { background: var(--panel); padding: 30px; border-radius: 12px; border: 1px solid var(--main); width: 85%; max-width: 400px; box-shadow: 0 0 25px rgba(0,255,204,0.15); }
-        
-        input { width: 100%; padding: 14px; margin: 10px 0; background: #000; color: var(--main); border: 1px solid #333; border-radius: 8px; box-sizing: border-box; font-size: 16px; outline: none; }
-        input:focus { border-color: var(--main); }
-        
-        button { width: 100%; padding: 14px; background: var(--main); color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 16px; }
-        button:hover { background: #fff; transform: translateY(-2px); }
+        /* 🎨 MATERIAL 3 DESIGN TOKENS */
+        :root {
+            --gemini-bg: #131314;       /* Deep Space Gray */
+            --gemini-surface: #1e1f20;  /* Surface Container */
+            --gemini-text: #e3e3e3;
+            --gemini-blue: #8ab4f8;
+            --gemini-gradient: linear-gradient(90deg, #4285f4, #9b72cb, #d96570);
+            --pill-radius: 28px;
+        }
 
-        /* 🎬 Main Hub UI */
-        #main-hub { display: none; padding: 15px; max-width: 800px; margin: auto; }
-        .nav-bar { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #222; margin-bottom: 20px; }
-        .coins { color: #ffaa00; font-weight: bold; font-size: 18px; }
+        body {
+            background-color: var(--gemini-bg);
+            color: var(--gemini-text);
+            font-family: 'Google Sans', Roboto, sans-serif;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; height: 100vh;
+            overflow: hidden;
+        }
 
-        /* 📺 AI Video Engine */
-        #player { width: 100%; height: 250px; background: #000; border: 2px solid #222; position: relative; display: flex; align-items: center; justify-content: center; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        #player img { width: 100%; height: 100%; object-fit: cover; }
-        #subs { position: absolute; bottom: 0; background: rgba(0,0,0,0.85); padding: 15px; width: 100%; color: #ffeb3b; text-align: center; font-size: 14px; font-weight: bold; border-top: 1px solid #333; }
+        /* ✨ HEADER: Minimalist & Personal */
+        header {
+            padding: 16px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+        .logo { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; }
+        .logo span { background: var(--gemini-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .profile { width: 32px; height: 32px; border-radius: 50%; background: #333; border: 1px solid #444; }
 
-        /* 📟 Console Terminal */
-        #terminal { background: #000; height: 100px; overflow-y: auto; padding: 12px; font-size: 12px; color: #00e676; border: 1px dashed #333; margin-top: 15px; border-radius: 8px; line-height: 1.6; }
+        /* 💬 WORKSPACE: Central Focus */
+        .workspace {
+            flex: 1; overflow-y: auto; padding: 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .welcome-text {
+            font-size: 32px; margin-top: 10vh; text-align: center;
+            background: var(--gemini-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-weight: 500; max-width: 600px;
+        }
+
+        /* 🪄 SHIMMER EFFECT (Skeleton State) */
+        .shimmer {
+            display: none; width: 100%; max-width: 600px; height: 20px;
+            margin-top: 20px; border-radius: 4px;
+            background: linear-gradient(90deg, #1e1f20 25%, #2a2b2c 50%, #1e1f20 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* 💊 THE INPUT PILL (Multi-modal Hub) */
+        .footer-container {
+            padding: 20px; display: flex; justify-content: center;
+            background: linear-gradient(to top, var(--gemini-bg) 80%, transparent);
+        }
+        .input-pill {
+            width: 100%; max-width: 760px; background: var(--gemini-surface);
+            border-radius: var(--pill-radius); padding: 8px 16px;
+            display: flex; align-items: center; gap: 12px;
+            border: 1px solid transparent; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-pill:focus-within {
+            background: #28292a; border-color: #3c4043;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.15);
+        }
         
-        /* 💸 Reward Ad Overlay */
-        #ad-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; }
+        input {
+            flex: 1; background: transparent; border: none; color: white;
+            padding: 12px 8px; font-size: 16px; outline: none;
+        }
+        .icon-btn {
+            color: #c4c7c5; cursor: pointer; padding: 8px; border-radius: 50%;
+            transition: background 0.2s; font-size: 20px;
+        }
+        .icon-btn:hover { background: #333; color: white; }
 
-        /* 👑 God Trigger (Secret) */
-        .god-trigger { position: fixed; bottom: 0; right: 0; width: 30px; height: 30px; opacity: 0; cursor: pointer; }
+        /* 🚀 Action Button */
+        .send-btn {
+            background: #e3e3e3; color: #131314; width: 40px; height: 40px;
+            border-radius: 50%; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; transition: transform 0.2s;
+        }
+        .send-btn:hover { transform: scale(1.05); background: white; }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen">
-        <div class="box" style="border-color: var(--danger);">
-            <h2 style="color: var(--danger); margin-top: 0;">JARVIS PROTOCOL</h2>
-            <p style="color: #666; font-size: 12px; margin-bottom: 20px;">AUTHENTICATION REQUIRED</p>
-            <input type="text" id="user-in" placeholder="Username">
-            <input type="password" id="pass-in" placeholder="Password">
-            <button onclick="AuthAgent.login()" style="background: var(--danger);">LOG-IN</button>
-            <button onclick="AuthAgent.signup()" style="background:#222; color:#aaa; margin-top:8px;">NEW REGISTRATION</button>
-        </div>
+    <header>
+        <div class="logo"><span>Jarvis</span></div>
+        <div class="profile" title="Vivek Rai"></div>
+    </header>
+
+    <div class="workspace">
+        <div class="welcome-text">नमस्ते विवेक, मैं आज आपकी कैसे सहायता कर सकता हूँ?</div>
+        <div id="loading-bar" class="shimmer"></div>
+        <div id="response-area" style="margin-top: 30px; max-width: 600px; line-height: 1.6; color: #c4c7c5;"></div>
     </div>
 
-    <div id="security-screen" style="display:none;">
-        <div class="box">
-            <h2>2-STEP VERIFY</h2>
-            <p style="color: #888;">Enter Master 4-Digit Pin</p>
-            <input type="password" id="sec-key" maxlength="4" placeholder="••••" style="text-align: center; letter-spacing: 15px;">
-            <button onclick="SecurityAgent.verify()">ACCESS SYSTEM</button>
+    <div class="footer-container">
+        <div class="input-pill">
+            <div class="icon-btn" title="Add Image">➕</div>
+            <input type="text" id="main-prompt" placeholder="यहाँ कुछ भी पूछें...">
+            <div class="icon-btn" title="Voice Search">🎤</div>
+            <button class="send-btn" onclick="triggerJarvis()">➔</button>
         </div>
     </div>
-
-    <div id="main-hub">
-        <div class="nav-bar">
-            <span>USER: <b id="user-display" style="color: var(--main);">GUEST</b></span>
-            <div class="coins">🪙 <span id="coin-bal">0</span></div>
-        </div>
-
-        <div style="margin-bottom: 20px;">
-            <input type="text" id="idea-in" placeholder="Scenario idea (e.g. A futuristic Mumbai)">
-            <button onclick="JarvisCEO.startWork()" id="gen-btn">🎬 GENERATE SCENE (10 Coins)</button>
-            <button id="earn-btn" onclick="EconomyAgent.watchAd()" style="display:none; background:#00e676; color:#000;">📺 EARN 20 COINS (AD)</button>
-        </div>
-
-        <div id="player">SYSTEM READY...</div>
-        <div id="terminal">> Log: System Standby.</div>
-        
-        <button onclick="AuthAgent.logout()" style="background:#222; color:#ff4444; margin-top:30px; border: 1px solid #333;">🔒 TERMINATE SESSION</button>
-    </div>
-
-    <div id="ad-overlay">
-        <div class="box">
-            <h3 style="color:#00e676;">LOADING REWARD...</h3>
-            <div id="timer" style="font-size:50px; color: var(--danger);">5</div>
-            <p style="color: #888;">Verifying ad view to refill your wallet.</p>
-        </div>
-    </div>
-
-    <div class="god-trigger" onclick="AdminAgent.prompt()"></div>
 
 <script>
-    // --- 🧬 CORE ENGINE CONFIG ---
-    const p1 = "AIzaSyABN_K"; const p2 = "4jNO2l4rZ6jFCL"; const p3 = "HgW4ngCuZuPOT0";
-    const API_KEY = p1 + p2 + p3;
-    let currentUser = "";
+    function triggerJarvis() {
+        const input = document.getElementById('main-prompt').value;
+        if(!input) return;
 
-    // --- 🤝 AUTOMATION AGENTS ---
-
-    // 1. SESSION & AUTH AGENT
-    const AuthAgent = {
-        signup: function() {
-            let u = document.getElementById('user-in').value.trim();
-            let p = document.getElementById('pass-in').value.trim();
-            if(!u || !p) return alert("Error: Missing Data");
-            localStorage.setItem(`j_user_${u}`, p);
-            localStorage.setItem(`coins_${u}`, 100);
-            alert("Success: Account created with 100 startup coins!");
-        },
-        login: function() {
-            let u = document.getElementById('user-in').value.trim();
-            let p = document.getElementById('pass-in').value.trim();
-            if(localStorage.getItem(`j_user_${u}`) === p) {
-                currentUser = u;
-                document.getElementById('auth-screen').style.display = 'none';
-                document.getElementById('security-screen').style.display = 'flex';
-            } else { alert("Error: Invalid Credentials"); }
-        },
-        logout: function() {
-            localStorage.removeItem("j_active_session");
-            location.reload();
-        }
-    };
-
-    // 2. IDENTITY VERIFICATION AGENT
-    const SecurityAgent = {
-        verify: function() {
-            if(document.getElementById('sec-key').value === "2007") {
-                localStorage.setItem("j_active_session", currentUser);
-                this.unlock();
-            } else { alert("Security Breach: Invalid PIN"); }
-        },
-        unlock: function() {
-            document.getElementById('security-screen').style.display = 'none';
-            document.getElementById('main-hub').style.display = 'block';
-            document.getElementById('user-display').innerText = currentUser.toUpperCase();
-            EconomyAgent.update();
-            WelcomeVoice();
-        }
-    };
-
-    // 3. FINANCIAL (COIN) AGENT
-    const EconomyAgent = {
-        update: function() {
-            let c = localStorage.getItem(`coins_${currentUser}`) || 0;
-            document.getElementById('coin-bal').innerText = c;
-            const btn = document.getElementById('gen-btn');
-            const earn = document.getElementById('earn-btn');
-            if(parseInt(c) < 10) {
-                btn.disabled = true;
-                btn.style.opacity = "0.5";
-                earn.style.display = 'block';
-            } else {
-                btn.disabled = false;
-                btn.style.opacity = "1";
-                earn.style.display = 'none';
-            }
-        },
-        watchAd: function() {
-            document.getElementById('ad-overlay').style.display = 'flex';
-            let t = 5;
-            let timer = setInterval(() => {
-                t--;
-                document.getElementById('timer').innerText = t;
-                if(t <= 0) {
-                    clearInterval(timer);
-                    let c = parseInt(localStorage.getItem(`coins_${currentUser}`)) + 20;
-                    localStorage.setItem(`coins_${currentUser}`, c);
-                    document.getElementById('ad-overlay').style.display = 'none';
-                    this.update();
-                }
-            }, 1000);
-        }
-    };
-
-    // 4. THE MASTER AI CEO (Gemini + Pollinations)
-    const JarvisCEO = {
-        startWork: async function() {
-            let idea = document.getElementById('idea-in').value;
-            if(!idea) return;
+        // Skeleton state ON
+        document.getElementById('loading-bar').style.display = 'block';
+        document.getElementById('response-area').innerText = "";
+        
+        // Simulate "Streaming" response
+        setTimeout(() => {
+            document.getElementById('loading-bar').style.display = 'none';
+            const text = "Commander Vivek, your request for '" + input + "' is being processed by the 1-Lakh agent network...";
+            let i = 0;
+            const timer = setInterval(() => {
+                document.getElementById('response-area').innerText += text[i];
+                i++;
+                if(i >= text.length) clearInterval(timer);
+            }, 30); // Typing effect (UX Choice)
             
-            // Deduct Credits
-            let c = parseInt(localStorage.getItem(`coins_${currentUser}`)) - 10;
-            localStorage.setItem(`coins_${currentUser}`, c);
-            EconomyAgent.update();
-
-            document.getElementById('terminal').innerHTML = "> CEO: Requesting neural patterns...";
-            
-            const prompt = `Create a Cinematic 2-scene JSON script for: "${idea}". Format strictly: [{"scene":1, "visual_prompt":"...", "audio_prompt":"..."}]`;
-            
-            try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
-                    method: "POST", headers: {"Content-Type":"application/json"},
-                    body: JSON.stringify({contents: [{parts: [{text: prompt}]}]})
-                });
-                const data = await res.json();
-                let cleanJson = data.candidates[0].content.parts[0].text.replace(/```json/g, '').replace(/```/g, '').trim();
-                const scenes = JSON.parse(cleanJson);
-                this.render(scenes);
-            } catch(e) { 
-                document.getElementById('terminal').innerHTML = "> Error: Neural link failure. Check connection.";
-            }
-        },
-        render: async function(scenes) {
-            for(let s of scenes) {
-                document.getElementById('terminal').innerHTML += `<br>> Editor: Rendering Scene ${s.scene}...`;
-                await new Promise(resolve => {
-                    let imgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(s.visual_prompt)}?width=1024&height=512&nologo=true`;
-                    document.getElementById('player').innerHTML = `<img src="${imgUrl}"><div id="subs">${s.audio_prompt}</div>`;
-                    
-                    const utt = new SpeechSynthesisUtterance(s.audio_prompt);
-                    utt.onend = resolve;
-                    window.speechSynthesis.speak(utt);
-                });
-            }
-            document.getElementById('terminal').innerHTML += "<br>> Log: Production Success.";
-        }
-    };
-
-    // 5. THE ADMIN (GOD MODE)
-    const AdminAgent = {
-        prompt: function() {
-            if(prompt("MASTER KEY:") === "vivek123") {
-                let u = prompt("User Target:");
-                localStorage.setItem(`coins_${u}`, 9999);
-                alert("Status: God Mode active for " + u);
-                location.reload();
-            }
-        }
-    };
-
-    // 🔊 VOX SYSTEM
-    function WelcomeVoice() {
-        const synth = window.speechSynthesis;
-        const msg = new SpeechSynthesisUtterance(`Welcome back Commander ${currentUser}. All agents are online and synced.`);
-        msg.rate = 0.9;
-        synth.speak(msg);
+            document.getElementById('main-prompt').value = "";
+        }, 1500);
     }
-
-    // 🔄 AUTO-SYNC (Page Refresh Handler)
-    window.onload = () => {
-        let savedUser = localStorage.getItem("j_active_session");
-        if(savedUser) {
-            currentUser = savedUser;
-            SecurityAgent.unlock();
-        }
-    };
 </script>
+
 </body>
 </html>
