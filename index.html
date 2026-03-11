@@ -3,119 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jarvis Gemini Official</title>
+    <title>Jarvis Official Fix</title>
     <style>
-        :root {
-            --bg: #131314;
-            --panel: #1e1f20;
-            --text: #e3e3e3;
-            --gemini-gradient: linear-gradient(90deg, #4285f4, #9b72cb, #d96570);
-        }
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Google Sans', sans-serif;
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column; height: 100vh;
-            overflow: hidden;
-        }
-        header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-        .logo { font-size: 20px; font-weight: bold; background: var(--gemini-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        :root { --bg: #131314; --panel: #1e1f20; --gradient: linear-gradient(90deg, #4285f4, #9b72cb, #d96570); }
+        body { background: var(--bg); color: #e3e3e3; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header { padding: 15px; border-bottom: 1px solid #333; text-align: center; font-weight: bold; background: var(--bg); }
         .workspace { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .welcome { font-size: 24px; margin-top: 40px; text-align: center; color: var(--text); font-weight: 500; }
-        #response-area { max-width: 650px; margin-top: 30px; line-height: 1.7; font-size: 16px; color: #c4c7c5; }
-        .shimmer { display: none; width: 100%; max-width: 400px; height: 4px; background: var(--gemini-gradient); margin: 20px 0; border-radius: 10px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-        .footer { padding: 20px; display: flex; justify-content: center; background: var(--bg); }
-        .pill { width: 95%; max-width: 750px; background: var(--panel); border-radius: 30px; padding: 8px 18px; display: flex; align-items: center; border: 1px solid #3c4043; }
-        input { flex: 1; background: transparent; border: none; color: white; font-size: 16px; outline: none; padding: 10px; }
-        .send-btn { background: white; color: black; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+        #res-area { max-width: 600px; margin-top: 20px; line-height: 1.6; text-align: center; font-size: 17px; }
+        .pill-box { padding: 20px; background: var(--bg); display: flex; justify-content: center; }
+        .pill { width: 90%; max-width: 700px; background: var(--panel); border-radius: 30px; padding: 10px 20px; display: flex; align-items: center; border: 1px solid #444; }
+        input { flex: 1; background: transparent; border: none; color: white; outline: none; font-size: 16px; }
+        .btn { background: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 18px; }
+        .loader { display: none; width: 50px; height: 4px; background: var(--gradient); margin: 20px; border-radius: 10px; animation: w 1s infinite; }
+        @keyframes w { 0% { width: 10px; } 100% { width: 100px; } }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Jarvis AI</div>
-        <div style="font-size: 12px; color: #888;">COMMANDER VIVEK • ACTIVE</div>
-    </header>
+    <header><span style="background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">JARVIS 2.0</span></header>
 
     <div class="workspace">
-        <div class="welcome" id="greet">नमस्ते विवेक, मैं आपकी क्या सहायता करूँ?</div>
-        <div id="loader" class="shimmer"></div>
-        <div id="response-area"></div>
+        <div id="loader" class="loader"></div>
+        <div id="res-area">नमस्ते विवेक, मैं ऑनलाइन हूँ। कुछ भी पूछें।</div>
     </div>
 
-    <div class="footer">
+    <div class="pill-box">
         <div class="pill">
-            <input type="text" id="user-input" placeholder="यहाँ कुछ भी पूछें...">
-            <button class="send-btn" onclick="askJarvis()">➔</button>
+            <input type="text" id="in" placeholder="यहाँ पूछें...">
+            <button class="btn" onclick="run()">➔</button>
         </div>
     </div>
 
 <script>
-    // 🛡️ SECURITY: आपकी नई API Key यहाँ सुरक्षित है
-    const K = "AIzaSyCufXP9Zr0sWBz0Idwk7A2Vyc7X6vO_GZU";
+    // ✅ आपकी अपनी API Key
+    const KEY = "AIzaSyCufXP9Zr0sWBz0Idwk7A2Vyc7X6vO_GZU";
 
-    async function askJarvis() {
-        const input = document.getElementById('user-input').value;
-        const resArea = document.getElementById('response-area');
-        const loader = document.getElementById('loader');
-        const greet = document.getElementById('greet');
+    async function run() {
+        const input = document.getElementById('in').value;
+        const res = document.getElementById('res-area');
+        const load = document.getElementById('loader');
 
         if(!input) return;
-
-        greet.style.display = 'none';
-        resArea.innerText = "";
-        loader.style.display = 'block';
+        res.innerText = "";
+        load.style.display = 'block';
 
         try {
-            // असली गूगल जेमिनी API कॉल
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${K}`, {
+            // 🚀 Gemini 1.5 Flash - सबसे तेज़ और फ्री
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    contents: [{ 
-                        parts: [{ text: "तुम विवेक के AI असिस्टेंट जार्विस हो। हमेशा हिंदी में जवाब दो। प्रश्न: " + input }] 
-                    }] 
-                })
+                body: JSON.stringify({ contents: [{ parts: [{ text: "तुम विवेक के AI हो। हिंदी में जवाब दो: " + input }] }] })
             });
 
             const data = await response.json();
-            loader.style.display = 'none';
+            load.style.display = 'none';
 
-            if(data.candidates && data.candidates[0].content.parts[0].text) {
-                let reply = data.candidates[0].content.parts[0].text;
-                typeWrite(reply);
+            if(data.candidates) {
+                let txt = data.candidates[0].content.parts[0].text;
+                let i = 0;
+                const type = setInterval(() => {
+                    res.innerText += txt[i];
+                    i++;
+                    if(i >= txt.length) {
+                        clearInterval(type);
+                        window.speechSynthesis.speak(new SpeechSynthesisUtterance(txt));
+                    }
+                }, 30);
             } else {
-                typeWrite("क्षमा करें, जार्विस अभी प्रोसेस नहीं कर पा रहा है।");
+                res.innerText = "सर्वर एरर! शायद API की लिमिट पूरी हो गई है या की अभी एक्टिव नहीं हुई है।";
             }
-
         } catch(e) {
-            loader.style.display = 'none';
-            typeWrite("एरर: न्यूरल लिंक टूट गया है। कृपया इंटरनेट चेक करें।");
+            load.style.display = 'none';
+            res.innerText = "कनेक्शन फेल! कृपया 5 मिनट बाद कोशिश करें।";
         }
-        document.getElementById('user-input').value = "";
+        document.getElementById('in').value = "";
     }
-
-    function typeWrite(text) {
-        const resArea = document.getElementById('response-area');
-        let i = 0;
-        resArea.innerText = "";
-        const interval = setInterval(() => {
-            resArea.innerText += text[i];
-            i++;
-            if(i >= text.length) {
-                clearInterval(interval);
-                // Voice Response
-                const speech = new SpeechSynthesisUtterance(text);
-                speech.lang = 'hi-IN';
-                window.speechSynthesis.speak(speech);
-            }
-        }, 25);
-    }
-
-    document.getElementById("user-input").addEventListener("keypress", (e) => { if(e.key === "Enter") askJarvis(); });
 </script>
-
 </body>
 </html>
